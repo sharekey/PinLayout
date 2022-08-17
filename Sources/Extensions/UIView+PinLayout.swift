@@ -28,6 +28,10 @@ extension UIView: Layoutable, SizeCalculable {
     public var pin: PinLayout<UIView> {
         return PinLayout(view: self, keepTransform: true)
     }
+  
+    public var isHiddenView: Bool {
+      return isHidden
+    }
 
     public var pinFrame: PinLayout<UIView> {
         return PinLayout(view: self, keepTransform: false)

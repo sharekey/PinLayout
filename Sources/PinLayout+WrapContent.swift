@@ -100,44 +100,52 @@ extension PinLayout {
         return wrapContent(type, padding: padding, { return "wrapContent(\(type.description), padding: \(insetsDescription(padding))" })
     }
 
+    public func wrapContent(_ type: WrapType, padding: PEdgeInsets, _ context: Context, subviews: [PinView]) -> PinLayout {
+      guard !subviews.isEmpty else { return self }
+
+      let firstViewRect = subviews[0].getRect(keepTransform: keepTransform)
+      let boundingRect = subviews.reduce(firstViewRect, { (result, view) in
+          result.union(view.getRect(keepTransform: keepTransform))
+      })
+
+      var offsetDx: CGFloat = 0
+      var offsetDy: CGFloat = 0
+
+      if type == .all || type == .horizontally {
+          let contentWidth = boundingRect.width + padding.left + padding.right
+          if contentWidth >= 0 {
+              setWidth(contentWidth, context)
+          }
+
+          offsetDx = -boundingRect.minX + padding.left
+      }
+
+      if type == .all || type == .vertically {
+          let contentHeight = boundingRect.height + padding.top + padding.bottom
+          if contentHeight >= 0 {
+              setHeight(contentHeight, context)
+          }
+
+          offsetDy = -boundingRect.minY + padding.top
+      }
+
+      if offsetDx != 0 || offsetDy != 0 {
+          subviews.forEach { (view) in
+              let viewRect = view.getRect(keepTransform: keepTransform)
+              let newRect = viewRect.offsetBy(dx: offsetDx, dy: offsetDy)
+              view.setRect(newRect, keepTransform: keepTransform)
+          }
+      }
+
+      return self
+    }
+  
     private func wrapContent(_ type: WrapType, padding: PEdgeInsets, _ context: Context) -> PinLayout {
-        let subviews = view.subviews
-        guard !subviews.isEmpty else { return self }
-
-        let firstViewRect = subviews[0].getRect(keepTransform: keepTransform)
-        let boundingRect = subviews.reduce(firstViewRect, { (result, view) in
-            result.union(view.getRect(keepTransform: keepTransform))
-        })
-
-        var offsetDx: CGFloat = 0
-        var offsetDy: CGFloat = 0
-
-        if type == .all || type == .horizontally {
-            let contentWidth = boundingRect.width + padding.left + padding.right
-            if contentWidth >= 0 {
-                setWidth(contentWidth, context)
-            }
-
-            offsetDx = -boundingRect.minX + padding.left
-        }
-
-        if type == .all || type == .vertically {
-            let contentHeight = boundingRect.height + padding.top + padding.bottom
-            if contentHeight >= 0 {
-                setHeight(contentHeight, context)
-            }
-
-            offsetDy = -boundingRect.minY + padding.top
-        }
-
-        if offsetDx != 0 || offsetDy != 0 {
-            subviews.forEach { (view) in
-                let viewRect = view.getRect(keepTransform: keepTransform)
-                let newRect = viewRect.offsetBy(dx: offsetDx, dy: offsetDy)
-                view.setRect(newRect, keepTransform: keepTransform)
-            }
-        }
-
-        return self
+      if let subviews = view.subviews as? [PinView] {
+      
+        return wrapContent(type, padding: padding, context, subviews: subviews)
+      }
+      
+      return self
     }
 }

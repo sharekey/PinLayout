@@ -26,9 +26,10 @@ import AppKit
 public protocol Layoutable: AnyObject, Equatable, CustomDebugStringConvertible {
     associatedtype PinView: Layoutable
 
-    var superview: PinView? { get }
     var subviews: [PinView] { get }
-
+    var superview: PinView? { get }
+    var isHiddenView: Bool { get }
+  
     func getRect(keepTransform: Bool) -> CGRect
     func setRect(_ rect: CGRect, keepTransform: Bool)
 

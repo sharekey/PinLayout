@@ -28,7 +28,7 @@ import Foundation
 #endif
 
 public class PinLayout<PinView: Layoutable> {
-    internal let view: PinView
+    public let view: PinView
     internal let keepTransform: Bool
 
     internal var _top: CGFloat?       // offset from superview's top edge

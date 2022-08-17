@@ -25,7 +25,7 @@ import Foundation
     import AppKit
 #endif
 
-typealias Context = () -> String
+public typealias Context = () -> String
 
 struct Size {
     var width: CGFloat?

@@ -29,6 +29,10 @@ extension CALayer: Layoutable {
     public var subviews: [CALayer] {
         return sublayers ?? []
     }
+  
+    public var isHiddenView: Bool {
+      return isHidden
+    }
 
     public var pin: PinLayout<CALayer> {
         return PinLayout(view: self, keepTransform: true)
