@@ -79,12 +79,12 @@ extension FitType {
 extension PinLayout {
     @discardableResult
     public func size(_ size: CGSize) -> PinLayout {
-        return setSize(size, { return "size(CGSize(width: \(size.width), height: \(size.height)))" })
+      return setSize(size.scaled, { return "size(CGSize(width: \(size.width), height: \(size.height)))" })
     }
 
     @discardableResult
     public func size(_ sideLength: CGFloat) -> PinLayout {
-        return setSize(CGSize(width: sideLength, height: sideLength), { return "size(sideLength: \(sideLength))" })
+        return setSize(CGSize(width: sideLength.scaled, height: sideLength.scaled), { return "size(sideLength: \(sideLength))" })
     }
 
     @discardableResult
