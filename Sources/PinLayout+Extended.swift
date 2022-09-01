@@ -80,3 +80,53 @@ extension PinLayout {
     }
   }
 }
+
+extension CGFloat {
+  static var scale: CGFloat {
+    let screen: UIScreen = UIScreen.main
+    return screen.scale / screen.nativeScale
+  }
+  
+  var scaled: CGFloat {
+    return CGFloat(self) * CGFloat.scale
+  }
+}
+
+extension Double {
+  var scaled: CGFloat {
+    return CGFloat(self) * CGFloat.scale
+  }
+  
+  func rounded(toPlaces places: Int) -> Double {
+    let divisor: Double = pow(10.0, Double(places))
+    return (self * divisor).rounded() / divisor
+  }
+}
+
+extension CGSize {
+  var scaled: CGSize {
+    return CGSize(width: self.width.scaled, height: self.height.scaled)
+  }
+}
+
+extension Int {
+  var scaled: CGFloat {
+    return CGFloat(self) * CGFloat.scale
+  }
+  
+  static func maximum(_ x: Int, _ y: Int) -> Int {
+    Int(CGFloat.maximum(CGFloat(x), CGFloat(y)))
+  }
+  
+  static func minimum(_ x: Int, _ y: Int) -> Int {
+    Int(CGFloat.minimum(CGFloat(x), CGFloat(y)))
+  }
+  
+  var toInt64: Int64 {
+    Int64(self)
+  }
+  
+  var toInt32: Int32 {
+    Int32(self)
+  }
+}
