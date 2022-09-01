@@ -143,7 +143,13 @@ extension PinLayout {
     private func wrapContent(_ type: WrapType, padding: PEdgeInsets, _ context: Context) -> PinLayout {
       if let subviews = view.subviews as? [PinView] {
       
-        return wrapContent(type, padding: padding, context, subviews: subviews)
+        var newPadding: PEdgeInsets = padding
+        newPadding.top = newPadding.top.scaled
+        newPadding.left = newPadding.left.scaled
+        newPadding.right = newPadding.right.scaled
+        newPadding.bottom = newPadding.bottom.scaled
+        
+        return wrapContent(type, padding: newPadding, context, subviews: subviews)
       }
       
       return self
